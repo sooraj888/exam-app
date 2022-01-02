@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { RadioGroup } from "react-native-radio-buttons-group";
+import SelectDropdown from "react-native-select-dropdown";
 
 const HomePage = ({
   setLaguage,
@@ -29,23 +30,10 @@ const HomePage = ({
     },
   ];
 
-  const languageRadioBtnData = [
-    { id: "1", label: "Kannada", value: "Kannada" },
-    { id: "2", label: "English   ", value: "English" },
-    { id: "3", label: "Hindi      ", value: "Hindi" },
-  ];
+  const laguages = ["Kannada", "English", "Hindi"];
+
   const [radioButtons, setRadioButtons] = useState(radioButtonsData);
-  const [languageRadioBtn, setlanguageRadioBtn] =
-    useState(languageRadioBtnData);
-  const onPressLanguageRadioButton = (laguages: any) => {
-    setlanguageRadioBtn(laguages);
-    console.log(laguages);
-    laguages.map((item: any) => {
-      if (item.selected) {
-        setLaguage(item.value);
-      }
-    });
-  };
+
   function onPressRadioButton(radioButtonsArray: any) {
     setRadioButtons(radioButtonsArray);
     // console.log(radioButtonsArray);
@@ -86,10 +74,20 @@ const HomePage = ({
         />
       </View>
       <View style={styles.laguage}>
-        <Text style={styles.lableForLanguage}>language:</Text>
-        <RadioGroup
-          radioButtons={languageRadioBtn}
-          onPress={onPressLanguageRadioButton}
+        <Text style={styles.lableForLanguage}>Language:</Text>
+
+        <SelectDropdown
+          data={laguages}
+          onSelect={(selectedItem, index) => {
+            // console.log(selectedItem, index);
+            setLaguage(selectedItem);
+          }}
+          buttonTextAfterSelection={(selectedItem, index) => {
+            return selectedItem;
+          }}
+          rowTextForSelection={(item, index) => {
+            return item;
+          }}
         />
       </View>
     </View>
@@ -139,11 +137,12 @@ const styles = StyleSheet.create({
   },
   laguage: {
     display: "flex",
+    flexDirection: "row",
   },
   lableForLanguage: {
     fontSize: 20,
     fontWeight: "bold",
-    paddingRight: 265,
+    padding: 10,
     alignItems: "flex-start",
   },
 });
