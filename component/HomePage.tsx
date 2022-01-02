@@ -1,7 +1,14 @@
 import { useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import { RadioGroup } from "react-native-radio-buttons-group";
 import SelectDropdown from "react-native-select-dropdown";
+import { Link } from "react-router-native";
 
 const HomePage = ({
   setLaguage,
@@ -54,7 +61,6 @@ const HomePage = ({
         onChangeText={handleOnNameChange}
         value={inputName}
       ></TextInput>
-
       <TextInput
         keyboardType="numeric"
         style={styles.input}
@@ -64,7 +70,6 @@ const HomePage = ({
         maxLength={3}
       ></TextInput>
       <Text style={styles.error}>{errorMessage}</Text>
-
       <View style={styles.gender}>
         <Text style={styles.lableForGender}>Gender:</Text>
         <RadioGroup
@@ -90,6 +95,15 @@ const HomePage = ({
           }}
         />
       </View>
+
+      <Link
+        to="/bb"
+        onPress={() => {
+          console.log("sad");
+        }}
+      >
+        <Text>dsd</Text>
+      </Link>
     </View>
   );
 };
@@ -145,4 +159,5 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: "flex-start",
   },
+  navItem: { color: "red" },
 });

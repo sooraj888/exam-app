@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
+import { NativeRouter, Route, Link, Routes } from "react-router-native";
 
 import HomePage from "./component/HomePage";
 
@@ -44,14 +45,34 @@ export default function App() {
   }, [Gender, inputAge, inputName, Laguage]);
 
   return (
-    <HomePage
-      setLaguage={setLaguage}
-      setGender={setGender}
-      handleOnNameChange={handleOnNameChange}
-      inputName={inputName}
-      inputAge={inputAge}
-      handleOnAgeChange={handleOnAgeChange}
-      errorMessage={errorMessage}
-    ></HomePage>
+    <NativeRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <HomePage
+              setLaguage={setLaguage}
+              setGender={setGender}
+              handleOnNameChange={handleOnNameChange}
+              inputName={inputName}
+              inputAge={inputAge}
+              handleOnAgeChange={handleOnAgeChange}
+              errorMessage={errorMessage}
+            ></HomePage>
+          }
+        ></Route>
+        <Route
+          path="/bb"
+          element={
+            <Text>
+              {inputName}
+              {inputAge}
+              {Gender}
+              {Laguage}
+            </Text>
+          }
+        ></Route>
+      </Routes>
+    </NativeRouter>
   );
 }
