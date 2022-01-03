@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
   TextInput,
   View,
   TouchableOpacity,
+  ToastAndroid,
+  Platform,
+  Alert,
 } from "react-native";
 import { RadioGroup } from "react-native-radio-buttons-group";
 import SelectDropdown from "react-native-select-dropdown";
@@ -17,8 +20,13 @@ const HomePage = ({
   inputName,
   inputAge,
   handleOnAgeChange,
-  errorMessage,
+
+  Laguage,
+  Gender,
 }: any) => {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isSubmitButtonEnable, setIsSubmitButtonEnable] = useState(false);
+  const [errorOnSubmit, setErrorOnSubmit] = useState("");
   const radioButtonsData = [
     {
       id: "1",
@@ -52,9 +60,56 @@ const HomePage = ({
       }
     });
   }
+  const showToast = () => {
+    ToastAndroid.show("Please fill up the form completely", ToastAndroid.SHORT);
+  };
+
+  const handleOnSubmitButton = () => {
+    if (!isSubmitButtonEnable) {
+      // showToast();
+      // console.log(Platform.OS);
+
+      if (Platform.OS == "android") {
+        showToast();
+      }
+      if (Platform.OS == "web") {
+        setErrorOnSubmit("Please fill up the form completely ");
+      }
+    }
+  };
+  useEffect(() => {
+    if (errorOnSubmit != "") {
+      setTimeout(() => {
+        setErrorOnSubmit("");
+      }, 2500);
+    }
+  }, [errorOnSubmit]);
+  useEffect(() => {
+    console.log("a");
+    if (
+      Laguage != "" &&
+      inputName != "" &&
+      Gender != "" &&
+      parseInt(inputAge) <= 100
+    ) {
+      console.log("pressed");
+      setIsSubmitButtonEnable(true);
+    } else {
+      setIsSubmitButtonEnable(false);
+    }
+  }, [Laguage, inputName, Gender, inputAge]);
+  useEffect(() => {
+    if (parseInt(inputAge) > 100) {
+      setErrorMessage("Age should be less than 100");
+    } else {
+      setErrorMessage("");
+    }
+  }, [inputAge]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.headding}>QUIZ</Text>
+      <Text style={styles.submitError}>{errorOnSubmit}</Text>
       <TextInput
         style={styles.input}
         placeholder="Name"
@@ -82,6 +137,7 @@ const HomePage = ({
         <Text style={styles.lableForLanguage}>Language:</Text>
 
         <SelectDropdown
+          buttonStyle={styles.dropDownList}
           data={laguages}
           onSelect={(selectedItem, index) => {
             // console.log(selectedItem, index);
@@ -95,15 +151,24 @@ const HomePage = ({
           }}
         />
       </View>
-
-      <Link
-        to="/bb"
-        onPress={() => {
-          console.log("sad");
-        }}
+      <TouchableOpacity
+        onPress={handleOnSubmitButton}
+        style={styles.ButtonSubmit}
       >
-        <Text>dsd</Text>
-      </Link>
+        <View pointerEvents={isSubmitButtonEnable ? "auto" : "none"}>
+          <Link to="/bb">
+            <Text
+              style={
+                isSubmitButtonEnable
+                  ? styles.SubmitButtonActive
+                  : styles.SubmitButton
+              }
+            >
+              Submit
+            </Text>
+          </Link>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -160,4 +225,30 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   navItem: { color: "red" },
+  SubmitButton: {
+    backgroundColor: "#C0C0C0",
+    margin: 30,
+    color: "white",
+    paddingHorizontal: 40,
+    paddingVertical: 10,
+    borderColor: "red",
+  },
+  SubmitButtonActive: {
+    backgroundColor: "purple",
+    margin: 30,
+    color: "white",
+    paddingHorizontal: 40,
+    paddingVertical: 10,
+    borderColor: "red",
+  },
+  submitError: {
+    height: 20,
+    color: "red",
+  },
+  ButtonSubmit: {
+    marginTop: 60,
+  },
+  dropDownList: {
+    maxWidth: 200,
+  },
 });

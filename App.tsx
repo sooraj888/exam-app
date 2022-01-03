@@ -8,7 +8,7 @@ import HomePage from "./component/HomePage";
 export default function App() {
   const [inputName, setInputName] = useState<string>("");
   const [inputAge, setInputAge] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState("");
+
   const [Gender, setGender] = useState("");
   const [Laguage, setLaguage] = useState("");
 
@@ -16,15 +16,6 @@ export default function App() {
     console.log("name", e);
     setInputName(e);
   };
-
-  useEffect(() => {
-    if (parseInt(inputAge) > 100) {
-      console.log("enter the correct age");
-      setErrorMessage("enter the correct age");
-    } else {
-      setErrorMessage("");
-    }
-  }, [inputAge]);
 
   const handleOnAgeChange = (e: any) => {
     let isNotNumber = false;
@@ -57,7 +48,8 @@ export default function App() {
               inputName={inputName}
               inputAge={inputAge}
               handleOnAgeChange={handleOnAgeChange}
-              errorMessage={errorMessage}
+              Gender={Gender}
+              Laguage={Laguage}
             ></HomePage>
           }
         ></Route>
