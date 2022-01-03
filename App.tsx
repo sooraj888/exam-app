@@ -4,6 +4,7 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import { NativeRouter, Route, Link, Routes } from "react-router-native";
 
 import HomePage from "./component/HomePage";
+import Quizdata from "./Data/QuizQuesion";
 
 export default function App() {
   const [inputName, setInputName] = useState<string>("");
@@ -32,6 +33,7 @@ export default function App() {
   };
 
   useEffect(() => {
+    console.log(Quizdata);
     console.log(inputName, inputAge, Gender, Laguage);
   }, [Gender, inputAge, inputName, Laguage]);
 
